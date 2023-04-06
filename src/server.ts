@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { connect } from './shared/infra/database/db';
+import { connect } from './database/db';
 
 import { app } from './app';
 
