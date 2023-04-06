@@ -1,8 +1,8 @@
 import express from 'express';
-import { router } from './shared/http/routes/app.routes';
-import { notFoundRouteHandler } from '@shared/http/routes/global.routes';
+import { router } from './routes/app.routes';
+import { notFoundRouteHandler } from './routes/global.routes';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from '@shared/infra/swagger/swagger.json';
+import swaggerDocument from './docs/swagger/swagger.json';
 import cors from 'cors';
 import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
