@@ -11,15 +11,13 @@ export class MongoUserRepository implements IUserRepository {
 	}
 
 	async getUser(userId: string): Promise<User | null> {
-		console.log('chegou aqui');
-		console.log(userId);
-
 		const user = await userSchema.findById(userId);
 		return user;
 	}
 
 	async deleteUser(userId: string): Promise<User | null> {
-		return null;
+		const deletedUser = await userSchema.findByIdAndDelete(userId);
+		return deletedUser;
 	}
 	async updateUser(userId: string): Promise<User | null> {
 		return null;
