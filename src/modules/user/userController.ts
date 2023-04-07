@@ -23,7 +23,6 @@ export class UserController {
 
 	async getUser(req: Request, res: Response, _next: NextFunction) {
 		const userId = req.params.id;
-
 		const user: User = await this.userService.getUser(userId);
 
 		return res.status(200).json({
@@ -43,7 +42,14 @@ export class UserController {
 	}
 
 	async updateUser(req: Request, res: Response, _next: NextFunction) {
-		return null;
+		const userId = req.params.id;
+		const updateBody = req.body;
+		const user: User = await this.userService.updateUser(userId, updateBody);
+
+		return res.status(200).json({
+			status: 'success',
+			data: user,
+		});
 	}
 
 	async authenticateUser(req: Request, res: Response, _next: NextFunction) {
