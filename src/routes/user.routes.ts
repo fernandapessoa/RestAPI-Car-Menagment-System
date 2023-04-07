@@ -12,6 +12,8 @@ usersRouter.get('/:id', (req, res, next) =>
 	userController.getUser(req, res, next)
 );
 // usersRouter.patch('/me');
-// usersRouter.delete('/me');
+usersRouter.delete('/:id', (req, res, next) =>
+	userController.deleteUser(req, res, next)
+);
 
 export { usersRouter };
