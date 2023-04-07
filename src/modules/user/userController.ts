@@ -13,7 +13,7 @@ export class UserController {
 		const userData: User = req.body;
 		const token = await this.userService.registerUser(userData);
 
-		//res.header('Authorization', 'Bearer ' + token);
+		res.header('Authorization', 'Bearer ' + token);
 
 		return res.status(201).json({
 			status: 'success',
