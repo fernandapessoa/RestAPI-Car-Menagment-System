@@ -11,7 +11,9 @@ usersRouter.post('/', (req, res, next) =>
 usersRouter.get('/:id', (req, res, next) =>
 	userController.getUser(req, res, next)
 );
-// usersRouter.patch('/me');
+usersRouter.patch('/:id', (req, res, next) =>
+	userController.updateUser(req, res, next)
+);
 usersRouter.delete('/:id', (req, res, next) =>
 	userController.deleteUser(req, res, next)
 );
