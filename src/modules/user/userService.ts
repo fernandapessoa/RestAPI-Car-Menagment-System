@@ -1,7 +1,7 @@
 import { IUserRepository } from './IUserRepository';
-import { userRepository } from './MongoUserRepository';
+import { userRepository } from './userRepository';
 import { /*createToken,*/ hashPass } from '../../security/security';
-import { User } from '../../types/userType';
+import { User } from './IUser';
 import axios from 'axios';
 import { isValidCpf } from '../../utils/isValidCpf';
 
@@ -42,6 +42,26 @@ export class UserService {
 		//return token;
 		return {};
 	}
+
+	async getUser(userId: string) {
+		const user = await this.userRepository.getUser(userId);
+
+		if (!user) throw new Error('User not found');
+
+		return user;
+	}
+
+	// async deleteUser(userId: string) {
+	// 	return null;
+	// }
+
+	// async updateUser(userId: string) {
+	// 	return null;
+	// }
+
+	// async findUserByEmail(email: string) {
+	// 	return null;
+	// }
 }
 
 const userService = new UserService(userRepository);
