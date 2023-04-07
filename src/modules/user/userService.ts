@@ -1,6 +1,6 @@
 import { IUserRepository } from './IUserRepository';
 import { userRepository } from './userRepository';
-import { /*createToken,*/ hashPass } from '../../security/security';
+import { createToken, hashPass } from '../../security/security';
 import { User } from './IUser';
 import axios from 'axios';
 import { isValidCpf } from '../../utils/isValidCpf';
@@ -38,9 +38,8 @@ export class UserService {
 			throw new Error('User already exists');
 		}
 
-		//const token = createToken(createdUser._id);
-		//return token;
-		return {};
+		const token = createToken(createdUser._id);
+		return token;
 	}
 
 	async getUser(userId: string) {
