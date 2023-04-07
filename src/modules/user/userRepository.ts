@@ -2,7 +2,7 @@
 import { User } from './IUser';
 import { IUserRepository } from './IUserRepository';
 import { userSchema } from './userSchema';
-//import { UpdateQuery } from 'mongoose';
+import { UpdateQuery } from 'mongoose';
 
 export class MongoUserRepository implements IUserRepository {
 	async registerUser(user: User): Promise<User | null> {
@@ -19,9 +19,18 @@ export class MongoUserRepository implements IUserRepository {
 		const deletedUser = await userSchema.findByIdAndDelete(userId);
 		return deletedUser;
 	}
-	async updateUser(userId: string): Promise<User | null> {
-		return null;
+
+	async updateUser(
+		userId: string,
+		updateBody: UpdateQuery<User>
+	): Promise<User | null> {
+		const updatedUser = await userSchema.findByIdAndUpdate(userId, updateBody, {
+			new: true,
+			runValidators: true,
+		});
+		return updatedUser;
 	}
+
 	async findUserByEmail(email: string): Promise<User | null> {
 		return null;
 	}
