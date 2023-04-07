@@ -1,9 +1,10 @@
 import { UserService, userService } from './userService';
 import { Request, Response, NextFunction } from 'express';
-import { User } from '../../types/userType';
+import { User } from './IUser';
 
 export class UserController {
 	private userService: UserService;
+
 	constructor(userService: UserService) {
 		this.userService = userService;
 	}
@@ -16,7 +17,31 @@ export class UserController {
 
 		return res.status(201).json({
 			status: 'success',
+			token: token,
 		});
+	}
+
+	async getUser(req: Request, res: Response, _next: NextFunction) {
+		const userId = req.params.id;
+
+		const user: User = await this.userService.getUser(userId);
+
+		return res.status(200).json({
+			status: 'success',
+			data: user,
+		});
+	}
+
+	async deleteUser(req: Request, res: Response, _next: NextFunction) {
+		return null;
+	}
+
+	async updateUser(req: Request, res: Response, _next: NextFunction) {
+		return null;
+	}
+
+	async authenticateUser(req: Request, res: Response, _next: NextFunction) {
+		return null;
 	}
 }
 
