@@ -8,7 +8,9 @@ const usersRouter = Router();
 usersRouter.post('/', (req, res, next) =>
 	userController.registerUser(req, res, next)
 );
-// usersRouter.get('/me');
+usersRouter.get('/:id', (req, res, next) =>
+	userController.getUser(req, res, next)
+);
 // usersRouter.patch('/me');
 // usersRouter.delete('/me');
 
