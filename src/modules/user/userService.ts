@@ -59,9 +59,16 @@ export class UserService {
 		return user;
 	}
 
-	// async updateUser(userId: string) {
-	// 	return null;
-	// }
+	async updateUser(userId: string, updateParams: Partial<User>) {
+		if (updateParams.password) {
+			updateParams.password = await hashPass(updateParams.password);
+		}
+		const user = await this.userRepository.updateUser(userId, updateParams);
+
+		if (!user) throw new Error('User not found');
+
+		return user;
+	}
 
 	// async findUserByEmail(email: string) {
 	// 	return null;
