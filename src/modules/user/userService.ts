@@ -51,9 +51,13 @@ export class UserService {
 		return user;
 	}
 
-	// async deleteUser(userId: string) {
-	// 	return null;
-	// }
+	async deleteUser(userId: string) {
+		const user = await this.userRepository.deleteUser(userId);
+		if (!user) throw new Error('User not found');
+		//await this.eventRepository.deleteAllUserEvents(userId);
+
+		return user;
+	}
 
 	// async updateUser(userId: string) {
 	// 	return null;
