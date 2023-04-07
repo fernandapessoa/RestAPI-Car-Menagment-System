@@ -33,7 +33,13 @@ export class UserController {
 	}
 
 	async deleteUser(req: Request, res: Response, _next: NextFunction) {
-		return null;
+		const userId = req.params.id;
+		await this.userService.deleteUser(userId);
+
+		return res.status(204).json({
+			status: 'success',
+			data: null,
+		});
 	}
 
 	async updateUser(req: Request, res: Response, _next: NextFunction) {
