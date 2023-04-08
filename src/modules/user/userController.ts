@@ -53,7 +53,14 @@ export class UserController {
 	}
 
 	async authenticateUser(req: Request, res: Response, _next: NextFunction) {
-		return null;
+		const { email, password } = req.body;
+		const token = await this.userService.authenticateUser(email, password);
+
+		res.header('Authorization', 'Bearer ' + token);
+
+		return res.status(200).json({
+			status: 'success',
+		});
 	}
 }
 
