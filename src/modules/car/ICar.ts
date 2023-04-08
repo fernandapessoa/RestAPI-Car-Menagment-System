@@ -1,15 +1,12 @@
-interface Accessory {
-	_id: string;
-	description: string;
-}
-
 interface Car {
 	_id: string;
 	model: string;
 	color: string;
-	year: number;
+	year: string;
 	value_per_day: number;
-	accessories: Accessory[];
+	accessories: {
+		description: string;
+	}[];
 	number_of_passengers: number;
 }
 
