@@ -36,6 +36,10 @@ const CarSchema = new Schema<Car>(
 
 		accessories: [
 			{
+				id: {
+					type: Schema.Types.ObjectId,
+					auto: true,
+				},
 				description: {
 					type: String,
 					required: [true, 'The accessory description is required'],
