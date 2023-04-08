@@ -18,17 +18,19 @@ export class MongoCarRepository implements ICarRepository {
 		const car = await carSchema.findOne({ _id: carId });
 		return car;
 	}
+
 	async getCarByAccessoryId(accessoryId: string): Promise<Car[]> {
 		const car = await carSchema.find({ 'accessories._id': accessoryId });
 		return car;
 	}
-	
+
 	async deleteCarById(carId: string): Promise<Car | null> {
 		const deletedEvent = await carSchema.findOneAndDelete({
 			_id: carId,
 		});
 		return deletedEvent;
 	}
+
 	async updateCar(
 		carId: string,
 		updateBody: UpdateQuery<Car>
@@ -39,6 +41,7 @@ export class MongoCarRepository implements ICarRepository {
 		});
 		return updatedCar;
 	}
+
 	async getCarByAttribute(
 		attributes: Record<string, string | number>
 	): Promise<Car[]> {
