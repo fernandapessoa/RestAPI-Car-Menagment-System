@@ -32,7 +32,8 @@ export class MongoUserRepository implements IUserRepository {
 	}
 
 	async findUserByEmail(email: string): Promise<User | null> {
-		return null;
+		const user = await userSchema.findOne({ email });
+		return user;
 	}
 }
 
