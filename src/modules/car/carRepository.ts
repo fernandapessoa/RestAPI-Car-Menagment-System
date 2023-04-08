@@ -26,8 +26,15 @@ export class MongoCarRepository implements ICarRepository {
 		const cars = await carSchema.find({ attribute: value });
 		return cars;
 	}
-	async deleteCarById(carId: string): Promise<Car | null> {}
-	async updateCar(carId: string, updateParams: unknown): Promise<Car | null> {}
+	async deleteCarById(carId: string): Promise<Car | null> {
+		const deletedEvent = await carSchema.findOneAndDelete({
+			_id: carId,
+		});
+		return deletedEvent;
+	}
+	async updateCar(carId: string, updateParams: unknown): Promise<Car | null> {
+		return {};
+	}
 }
 
 export { ICarRepository };
