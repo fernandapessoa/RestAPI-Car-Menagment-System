@@ -7,8 +7,8 @@ import { authenticationRouter } from './authentication.routes';
 const router = Router();
 
 router.use('/authenticate', authenticationRouter);
-router.use('/users', usersRouter);
-router.use('/cars', carsRouter);
+router.use('/user', usersRouter);
+router.use('/car', carsRouter);
 router.use('/reserve', reserveRouter);
 
 export { router };
