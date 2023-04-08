@@ -32,8 +32,15 @@ export class MongoCarRepository implements ICarRepository {
 		});
 		return deletedEvent;
 	}
-	async updateCar(carId: string, updateParams: unknown): Promise<Car | null> {
-		return {};
+	async updateCar(
+		carId: string,
+		updateBody: UpdateQuery<Car>
+	): Promise<Car | null> {
+		const updatedCar = await carSchema.findByIdAndUpdate(carId, updateBody, {
+			new: true,
+			runValidators: true,
+		});
+		return updatedCar;
 	}
 }
 
