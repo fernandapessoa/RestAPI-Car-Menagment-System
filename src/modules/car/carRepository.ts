@@ -9,9 +9,14 @@ export class MongoCarRepository implements ICarRepository {
 		return registeredCar;
 	}
 
-	async getAllCars(): Promise<Car[]> {}
+	async getAllCars(): Promise<Car[]> {
+		const cars = await carSchema.find({});
+		return cars;
+	}
+
 	async getCarById(carId: string): Promise<Car | null> {}
 	async getCarByAccessoryId(accessoriesId: string): Promise<Car[]> {}
+    getCarByParam(queryParam: string): Promise<Car[]> {}
 	async deleteCarById(carId: string): Promise<Car | null> {}
 	async updateCar(carId: string, updateParams: unknown): Promise<Car | null> {}
 }
