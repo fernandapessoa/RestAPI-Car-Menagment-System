@@ -29,6 +29,15 @@ export class CarController {
 			total: cars.length,
 		});
 	}
+
+	async getCarById(req: Request, res: Response, _next: NextFunction) {
+		const carId = req.params.id;
+		const car = await this.carService.getCarById(carId);
+		return res.status(200).json({
+			status: 'success',
+			data: car,
+		});
+	}
 }
 
 const carController = new CarController(carService);
