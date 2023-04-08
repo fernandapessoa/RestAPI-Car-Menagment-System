@@ -4,8 +4,8 @@ import { carSchema } from './carSchema';
 import { UpdateQuery } from 'mongoose';
 
 export class MongoCarRepository implements ICarRepository {
-	async registerCar(car: Car): Promise<Car | null> {
-		const registeredCar = await carSchema.create(car);
+	async registerCar(carData: Car): Promise<Car | null> {
+		const registeredCar = await carSchema.create(carData);
 		return registeredCar;
 	}
 
@@ -44,4 +44,5 @@ export class MongoCarRepository implements ICarRepository {
 	}
 }
 
-export { ICarRepository };
+const carRepository = new MongoCarRepository();
+export { carRepository };

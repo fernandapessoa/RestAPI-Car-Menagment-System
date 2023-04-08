@@ -2,7 +2,7 @@
 import { Car } from './ICar';
 
 interface ICarRepository {
-	registerCar(car: Car): Promise<Car | null>;
+	registerCar(carData: Car): Promise<Car | null>;
 	getAllCars(): Promise<Car[]>;
 	getCarById(carId: string): Promise<Car | null>;
 	getCarByAccessoryId(accessoryId: string): Promise<Car[]>;
