@@ -22,7 +22,16 @@ export class CarController {
 	}
 
 	@CatchExpressError
-	async gatAllCars(req: Request, res: Response, _next: NextFunction) {
+	async gatCars(req: Request, res: Response, _next: NextFunction) {
+		if (req.query) {
+			const attributes = req.query as Record<string, string | number>;
+			const filteredCars = await this.carService.getCarByQueryParam(attributes);
+			return res.status(200).json({
+				status: 'success',
+				data: filteredCars,
+				total: filteredCars.length,
+			});
+		}
 		const cars = await this.carService.getAllCars();
 		return res.status(200).json({
 			status: 'success',
