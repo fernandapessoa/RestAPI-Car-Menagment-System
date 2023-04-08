@@ -2,6 +2,7 @@ import { ICarRepository } from './ICarRepository';
 import { carRepository } from './carRepository';
 import { Car } from './ICar';
 import { AppError } from '../../errors/AppError';
+import { UpdateQuery } from 'mongoose';
 
 export class CarService {
 	private carRepository: ICarRepository;
@@ -35,11 +36,16 @@ export class CarService {
 
 	async updateCarById(
 		carId: string,
-		updateBody: UpdateQuery<User>
+		updateBody: UpdateQuery<Car>
 	): Promise<Car | null> {
 		const car = await this.carRepository.updateCar(carId, updateBody);
 		if (!car) throw new AppError(404, 'Car not found');
 		return car;
+	}
+
+	async getCarByQueryParam(attributes: Record<string, string | number>) {
+		const cars = await this.carRepository.getCarByAttribute(attributes);
+		return cars;
 	}
 }
 
