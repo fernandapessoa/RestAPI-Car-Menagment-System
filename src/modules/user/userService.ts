@@ -3,7 +3,6 @@ import { userRepository } from './userRepository';
 import { createToken, hashPass, comparePass } from '../../security/security';
 import { User } from './IUser';
 import axios from 'axios';
-import { isValidCpf } from '../../utils/isValidCpf';
 import { AppError } from '../../errors/AppError';
 
 export class UserService {
@@ -16,11 +15,6 @@ export class UserService {
 	async registerUser(userData: User) {
 		userData.password = await hashPass(userData.password);
 		userData.birth = new Date(userData.birth);
-
-		const validCpf = isValidCpf(userData.cpf);
-		if (!validCpf) {
-			throw new Error('Invalid CPF');
-		}
 
 		await axios
 			.get(`https://viacep.com.br/ws/${userData.cep}/json`)
@@ -54,6 +48,7 @@ export class UserService {
 	async deleteUser(userId: string) {
 		const user = await this.userRepository.deleteUser(userId);
 		if (!user) throw new Error('User not found');
+		//deletar as reservas dele
 		//await this.eventRepository.deleteAllUserEvents(userId);
 
 		return user;
