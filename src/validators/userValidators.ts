@@ -5,7 +5,7 @@ import joiDate from '@joi/date';
 import { isValidCpf } from '../utils/isValidCpf';
 const joiExtended = Joi.extend(joiDate);
 
-const createUserSchema = Joi.object({
+const registerUserSchema = Joi.object({
 	name: Joi.string().min(3).max(65).required(),
 	birth: joiExtended
 		.date()
@@ -55,4 +55,4 @@ const updateUserSchema = Joi.object({
 	qualified: Joi.string().valid('sim', 'não').optional(),
 }).unknown(true);
 
-export { createUserSchema, updateUserSchema };
+export { registerUserSchema, updateUserSchema };
