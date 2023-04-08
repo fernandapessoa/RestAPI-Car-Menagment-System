@@ -21,6 +21,7 @@ export class CarController {
 		});
 	}
 
+	@CatchExpressError
 	async gatAllCars(req: Request, res: Response, _next: NextFunction) {
 		const cars = await this.carService.getAllCars();
 		return res.status(200).json({
@@ -30,9 +31,39 @@ export class CarController {
 		});
 	}
 
+	@CatchExpressError
 	async getCarById(req: Request, res: Response, _next: NextFunction) {
 		const carId = req.params.id;
 		const car = await this.carService.getCarById(carId);
+		return res.status(200).json({
+			status: 'success',
+			data: car,
+		});
+	}
+
+	@CatchExpressError
+	async deleteCarById(req: Request, res: Response, _next: NextFunction) {
+		const carId = req.params.id;
+		const deletedCar = await this.carService.deleteCarById(carId);
+
+		if (!deletedCar) {
+			return res.status(404).json({
+				message: `Car of id ${carId} not found`,
+			});
+		}
+
+		return res.status(204).json({
+			status: 'success',
+			message: `Car of id ${carId} deleted`,
+		});
+	}
+
+	@CatchExpressError
+	async updateCarById(req: Request, res: Response, _next: NextFunction) {
+		const carId = req.params.id;
+		const updateBody = req.body;
+		const car = await this.carService.updateCarById(carId, updateBody);
+
 		return res.status(200).json({
 			status: 'success',
 			data: car,
