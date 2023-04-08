@@ -1,6 +1,7 @@
 import { UserService, userService } from './userService';
 import { Request, Response, NextFunction } from 'express';
 import { User } from './IUser';
+import { CatchExpressError } from '../../decorators/CatchExpressError';
 
 export class UserController {
 	private userService: UserService;
@@ -9,6 +10,7 @@ export class UserController {
 		this.userService = userService;
 	}
 
+	@CatchExpressError
 	async registerUser(req: Request, res: Response, _next: NextFunction) {
 		const userData: User = req.body;
 		const token = await this.userService.registerUser(userData);
@@ -21,6 +23,7 @@ export class UserController {
 		});
 	}
 
+	@CatchExpressError
 	async getUser(req: Request, res: Response, _next: NextFunction) {
 		const userId = req.params.id;
 		const user: User = await this.userService.getUser(userId);
@@ -31,6 +34,7 @@ export class UserController {
 		});
 	}
 
+	@CatchExpressError
 	async deleteUser(req: Request, res: Response, _next: NextFunction) {
 		const userId = req.params.id;
 		await this.userService.deleteUser(userId);
@@ -41,6 +45,7 @@ export class UserController {
 		});
 	}
 
+	@CatchExpressError
 	async updateUser(req: Request, res: Response, _next: NextFunction) {
 		const userId = req.params.id;
 		const updateBody = req.body;
@@ -52,6 +57,7 @@ export class UserController {
 		});
 	}
 
+	@CatchExpressError
 	async authenticateUser(req: Request, res: Response, _next: NextFunction) {
 		const { email, password } = req.body;
 		const token = await this.userService.authenticateUser(email, password);
