@@ -27,6 +27,20 @@ export class CarService {
 		const car = await this.carRepository.getCarById(carId);
 		return car;
 	}
+
+	async deleteCarById(carId: string) {
+		const deletedCar = await this.carRepository.deleteCarById(carId);
+		return deletedCar;
+	}
+
+	async updateCarById(
+		carId: string,
+		updateBody: UpdateQuery<User>
+	): Promise<Car | null> {
+		const car = await this.carRepository.updateCar(carId, updateBody);
+		if (!car) throw new AppError(404, 'Car not found');
+		return car;
+	}
 }
 
 const carService = new CarService(carRepository);
