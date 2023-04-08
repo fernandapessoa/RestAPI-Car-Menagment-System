@@ -22,6 +22,11 @@ export class CarService {
 		const cars = await this.carRepository.getAllCars();
 		return cars;
 	}
+
+	async getCarById(carId: string) {
+		const car = await this.carRepository.getCarById(carId);
+		return car;
+	}
 }
 
 const carService = new CarService(carRepository);
