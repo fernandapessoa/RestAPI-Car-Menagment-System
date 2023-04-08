@@ -5,6 +5,7 @@ const CarSchema = new Schema<Car>(
 	{
 		model: {
 			type: String,
+			unique: true,
 			required: [true, 'The car model is required'],
 			trim: true,
 		},
@@ -16,7 +17,7 @@ const CarSchema = new Schema<Car>(
 		},
 
 		year: {
-			type: Number,
+			type: String,
 			required: [true, 'The car year is required'],
 			min: [1900, 'The car year must be greater than or equal to 1900'],
 			max: [
@@ -36,10 +37,6 @@ const CarSchema = new Schema<Car>(
 
 		accessories: [
 			{
-				id: {
-					type: Schema.Types.ObjectId,
-					auto: true,
-				},
 				description: {
 					type: String,
 					required: [true, 'The accessory description is required'],
@@ -54,7 +51,7 @@ const CarSchema = new Schema<Car>(
 			min: [1, 'The number of passengers must be greater than or equal to 1'],
 		},
 	},
-	{ timestamps: true }
+	{ versionKey: false }
 );
 
 const carSchema = model('Car', CarSchema);
