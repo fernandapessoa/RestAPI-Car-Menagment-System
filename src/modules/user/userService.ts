@@ -1,9 +1,10 @@
 import { IUserRepository } from './IUserRepository';
 import { userRepository } from './userRepository';
-import { createToken, hashPass } from '../../security/security';
+import { createToken, hashPass, comparePass } from '../../security/security';
 import { User } from './IUser';
 import axios from 'axios';
 import { isValidCpf } from '../../utils/isValidCpf';
+import { AppError } from '../../errors/AppError';
 
 export class UserService {
 	private userRepository: IUserRepository;
@@ -69,9 +70,16 @@ export class UserService {
 		return user;
 	}
 
-	// async findUserByEmail(email: string) {
-	// 	return null;
-	// }
+	async authenticateUser(email: string, password: string) {
+		const user = await this.userRepository.findUserByEmail(email);
+		if (!user) throw new AppError(401, 'Invalid email or password');
+
+		const validPass = await comparePass(password, user.password);
+		if (!validPass) throw new AppError(401, 'Invalid email or password');
+
+		const token = createToken(user._id);
+		return token;
+	}
 }
 
 const userService = new UserService(userRepository);
