@@ -4,6 +4,7 @@ import { ReserveService, reserveService } from './reserveService';
 import { Request, Response, NextFunction } from 'express';
 import { Reserve } from './IReserve';
 import { CatchExpressError } from '../../decorators/CatchExpressError';
+import { pagination } from '../../utils/pagination';
 
 export class ReserveController {
 	private reserveService: ReserveService;
@@ -14,8 +15,8 @@ export class ReserveController {
 
 	@CatchExpressError
 	async registerReserve(req: Request, res: Response, _next: NextFunction) {
-		const reserData: Reserve = req.body;
-		const reserve = await this.reserveService.registerReserve(reserData);
+		const reserveData: Reserve = req.body;
+		const reserve = await this.reserveService.registerReserve(reserveData);
 
 		return res.status(201).json({
 			status: 'success',
@@ -26,25 +27,44 @@ export class ReserveController {
 	@CatchExpressError
 	async getReserve(req: Request, res: Response, _next: NextFunction) {
 		const userId: string = req.body.user._id;
-		const reserveParams = req.params;
-		if (reserveParams) {
-			const attributes = req.query as Record<string, string | number>;
+		const [skip, limit, offset, offsets, queryparam, filteredKeys] =
+			pagination(req);
+
+		if (queryparam) {
+			const attributes = filteredKeys.reduce((acc, key) => {
+				return {
+					...acc,
+					[key]: req.query[key],
+				};
+			}, {}) as Record<string, string | number>;
 			attributes.id_user = userId;
 			const filteredReserves = await this.reserveService.getReserveByQueryParam(
-				attributes
+				attributes,
+				skip,
+				limit
 			);
 			return res.status(200).json({
 				status: 'success',
 				data: filteredReserves,
 				total: filteredReserves.length,
+				limit: limit,
+				offset: offset,
+				offsets: offsets,
 			});
 		}
 
-		const reserves = await this.reserveService.getAllReserves(userId);
+		const reserves = await this.reserveService.getAllReserves(
+			userId,
+			skip,
+			limit
+		);
 		return res.status(200).json({
 			status: 'success',
 			data: reserves,
 			total: reserves.length,
+			limit: limit,
+			offset: offset,
+			offsets: offsets,
 		});
 	}
 
@@ -52,8 +72,6 @@ export class ReserveController {
 	async getReserveById(req: Request, res: Response, _next: NextFunction) {
 		const userId: string = req.body.user._id.toString();
 		const reserveId: string = req.params.id;
-		console.log(userId);
-		console.log(reserveId);
 
 		const reserve = await this.reserveService.getReserveById(userId, reserveId);
 		return res.status(200).json({
