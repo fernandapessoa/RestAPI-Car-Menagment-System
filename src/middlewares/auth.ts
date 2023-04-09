@@ -18,7 +18,6 @@ export async function auth(req: Request, res: Response, next: NextFunction) {
 
 	try {
 		req.body.user = await userService.getUser(payload.id);
-		req.params.id = payload.id;
 	} catch (err) {
 		return next(new Error('Invalid or expired token'));
 	}
