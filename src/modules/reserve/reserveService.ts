@@ -1,9 +1,12 @@
 import { IReserveRepository } from './IReserveRepository';
 import { reserveRepository } from './reserveRepository';
 import { Reserve } from './IReserve';
-import { convertDate } from '../../utils/convertDate';
 import { AppError } from '../../errors/AppError';
 import { UpdateQuery } from 'mongoose';
+import {
+	validateReserve,
+	validateUpdateReserve,
+} from '../../utils/validateReserve';
 
 export class ReserveService {
 	private reserveRepository: IReserveRepository;
@@ -13,20 +16,7 @@ export class ReserveService {
 	}
 
 	async registerReserve(query: any): Promise<Reserve | null> {
-		let { start_date, end_date } = query;
-		const { id_car } = query;
-		const id_user = query.user._id;
-
-		start_date = new Date(convertDate(start_date));
-		end_date = new Date(convertDate(end_date));
-
-		const reserveData = {
-			start_date,
-			end_date,
-			id_car,
-			id_user,
-			final_value: 10,
-		};
+		const reserveData = await validateReserve(query);
 
 		const registeredData = await this.reserveRepository.registerReserve(
 			reserveData
@@ -34,8 +24,16 @@ export class ReserveService {
 		return registeredData;
 	}
 
-	async getAllReserves(userId: string): Promise<Reserve[]> {
-		const reserves = await this.reserveRepository.getAllReserves(userId);
+	async getAllReserves(
+		userId: string,
+		skip: number,
+		limit: number
+	): Promise<Reserve[]> {
+		const reserves = await this.reserveRepository.getAllReserves(
+			userId,
+			skip,
+			limit
+		);
 		return reserves;
 	}
 
@@ -53,9 +51,15 @@ export class ReserveService {
 		return reserve;
 	}
 
-	async getReserveByQueryParam(attributes: Record<string, string | number>) {
+	async getReserveByQueryParam(
+		attributes: Record<string, string | number>,
+		skip: number,
+		limit: number
+	) {
 		const reserves = await this.reserveRepository.getReserveByAttribute(
-			attributes
+			attributes,
+			skip,
+			limit
 		);
 		return reserves;
 	}
@@ -75,12 +79,14 @@ export class ReserveService {
 		reserveId: string,
 		updateBody: UpdateQuery<Reserve>
 	): Promise<Reserve | null> {
-		const reserve = await this.reserveRepository.updateReserveById(
+		const reserve = await this.getReserveById(userId, reserveId);
+		updateBody = await validateUpdateReserve(updateBody, reserve);
+		const updatedReserve = await this.reserveRepository.updateReserveById(
 			userId,
 			reserveId,
 			updateBody
 		);
-		return reserve;
+		return updatedReserve;
 	}
 }
 
