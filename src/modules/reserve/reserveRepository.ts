@@ -13,23 +13,42 @@ export class MongoReserveRepository implements IReserveRepository {
 	}
 
 	async getAllReserves(): Promise<Reserve[] | null> {
-		return null;
+		const reserves = await reserveSchema.find({});
+		return reserves;
 	}
 
-	async getReserveById(reserveId: string): Promise<Reserve[] | null> {
-		return null;
+	async getReserveById(
+		userId: string,
+		reserveId: string
+	): Promise<Reserve | null> {
+		const reserve = await reserveSchema.findOne({
+			id_user: userId,
+			_id: reserveId,
+		});
+		return reserve;
 	}
 
-	async getReserveByAttribute(
-		attribute: Record<string, string | number>
-	): Promise<Reserve[]>;
-
-	async updateReserveById(reserveId: string): Promise<Reserve[] | null> {
-		return null;
+	async updateReserveById(
+		userId: string,
+		reserveId: string,
+		updateBody: UpdateQuery<Reserve>
+	): Promise<Reserve | null> {
+		const updatedReserve = await reserveSchema.findByIdAndUpdate(
+			reserveId,
+			updateBody,
+			{
+				new: true,
+				runValidators: true,
+			}
+		);
+		return updatedReserve;
 	}
 
-	async deleteReserveById(reserveId: string): Promise<Reserve[] | null> {
-		return null;
+	async deleteReserveById(reserveId: string): Promise<Reserve | null> {
+		const deletedReserve = await reserveSchema.findOneAndDelete({
+			_id: reserveId,
+		});
+		return deletedReserve;
 	}
 }
 
