@@ -43,6 +43,20 @@ export class CarService {
 		return car;
 	}
 
+	async updateCarByAcessoryId(
+		carId: string,
+		acessoryId: string,
+		updateBody: UpdateQuery<Car>
+	): Promise<Car | null> {
+		const car = await this.carRepository.updateCarByAcessoryId(
+			carId,
+			acessoryId,
+			updateBody
+		);
+		if (!car) throw new AppError(404, 'Car not found');
+		return car;
+	}
+
 	async getCarByQueryParam(
 		attributes: Record<string, string | number>,
 		skip: number,
