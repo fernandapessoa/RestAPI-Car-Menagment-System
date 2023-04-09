@@ -19,8 +19,8 @@ export class CarService {
 		return registerCar;
 	}
 
-	async getAllCars() {
-		const cars = await this.carRepository.getAllCars();
+	async getAllCars(skip: number, limit: number) {
+		const cars = await this.carRepository.getAllCars(skip, limit);
 		return cars;
 	}
 
@@ -43,8 +43,16 @@ export class CarService {
 		return car;
 	}
 
-	async getCarByQueryParam(attributes: Record<string, string | number>) {
-		const cars = await this.carRepository.getCarByAttribute(attributes);
+	async getCarByQueryParam(
+		attributes: Record<string, string | number>,
+		skip: number,
+		limit: number
+	) {
+		const cars = await this.carRepository.getCarByAttribute(
+			attributes,
+			skip,
+			limit
+		);
 		return cars;
 	}
 }
