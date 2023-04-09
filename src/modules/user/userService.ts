@@ -17,16 +17,17 @@ export class UserService {
 		userData.password = await hashPass(userData.password);
 		userData.birth = new Date(convertDate(userData.birth));
 
-		await axios
-			.get(`https://viacep.com.br/ws/${userData.cep}/json`)
-			.then((res) => {
-				const { bairro, complemento, uf, localidade, logradouro } = res.data;
-				userData.patio = logradouro;
-				userData.complement = complemento;
-				userData.neighborhood = bairro;
-				userData.locality = localidade;
-				userData.uf = uf;
-			});
+		const baseUrl = 'https://viacep.com.br/ws';
+		const { cep } = userData;
+
+		await axios.get(`${baseUrl}/${cep}/json`).then((res) => {
+			const { bairro, complemento, uf, localidade, logradouro } = res.data;
+			userData.patio = logradouro;
+			userData.complement = complemento;
+			userData.neighborhood = bairro;
+			userData.locality = localidade;
+			userData.uf = uf;
+		});
 
 		const createdUser = await this.userRepository.registerUser(userData);
 
@@ -59,6 +60,21 @@ export class UserService {
 		if (updateParams.password) {
 			updateParams.password = await hashPass(updateParams.password);
 		}
+
+		if (updateParams.cep) {
+			const baseUrl = 'https://viacep.com.br/ws';
+			const { cep } = updateParams;
+
+			await axios.get(`${baseUrl}/${cep}/json`).then((res) => {
+				const { bairro, complemento, uf, localidade, logradouro } = res.data;
+				updateParams.patio = logradouro;
+				updateParams.complement = complemento;
+				updateParams.neighborhood = bairro;
+				updateParams.locality = localidade;
+				updateParams.uf = uf;
+			});
+		}
+
 		const user = await this.userRepository.updateUser(userId, updateParams);
 
 		if (!user) throw new Error('User not found');
