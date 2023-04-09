@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../errors/AppError';
 import { ValidationError } from 'joi';
-import Joi from 'joi';
 
 export function notFoundRouteHandler(
 	req: Request,
