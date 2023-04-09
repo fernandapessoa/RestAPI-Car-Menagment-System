@@ -9,8 +9,8 @@ export class MongoCarRepository implements ICarRepository {
 		return registeredCar;
 	}
 
-	async getAllCars(): Promise<Car[]> {
-		const cars = await carSchema.find({});
+	async getAllCars(skip: number, limit: number): Promise<Car[]> {
+		const cars = await carSchema.find({}).skip(skip).limit(limit);
 		return cars;
 	}
 
@@ -25,10 +25,10 @@ export class MongoCarRepository implements ICarRepository {
 	}
 
 	async deleteCarById(carId: string): Promise<Car | null> {
-		const deletedEvent = await carSchema.findOneAndDelete({
+		const deletedCar = await carSchema.findOneAndDelete({
 			_id: carId,
 		});
-		return deletedEvent;
+		return deletedCar;
 	}
 
 	async updateCar(
@@ -43,9 +43,11 @@ export class MongoCarRepository implements ICarRepository {
 	}
 
 	async getCarByAttribute(
-		attributes: Record<string, string | number>
+		attributes: Record<string, string | number>,
+		skip: number,
+		limit: number
 	): Promise<Car[]> {
-		const cars = await carSchema.find(attributes);
+		const cars = await carSchema.find(attributes).skip(skip).limit(limit);
 		return cars;
 	}
 }
