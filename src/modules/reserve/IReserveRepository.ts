@@ -3,7 +3,11 @@ import { Reserve } from './IReserve';
 
 interface IReserveRepository {
 	registerReserve(reserveData: Reserve): Promise<Reserve | null>;
-	getAllReserves(userId: string): Promise<Reserve[]>;
+	getAllReserves(
+		userId: string,
+		skip: number,
+		limit: number
+	): Promise<Reserve[]>;
 	getReserveById(userId: string, reserveId: string): Promise<Reserve | null>;
 	updateReserveById(
 		userId: string,
@@ -11,7 +15,9 @@ interface IReserveRepository {
 		updateBody: unknown
 	): Promise<Reserve | null>;
 	getReserveByAttribute(
-		attributes: Record<string, string | number>
+		attributes: Record<string, string | number>,
+		skip: number,
+		limit: number
 	): Promise<Reserve[]>;
 	deleteReserveById(userId: string, reserveId: string): Promise<Reserve | null>;
 }
