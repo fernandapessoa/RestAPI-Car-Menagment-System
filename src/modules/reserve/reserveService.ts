@@ -3,7 +3,7 @@ import { reserveRepository } from './reserveRepository';
 import { Reserve } from './IReserve';
 import { convertDate } from '../../utils/convertDate';
 //import { AppError } from '../../errors/AppError';
-//import { UpdateQuery } from 'mongoose';
+import { UpdateQuery } from 'mongoose';
 
 export class ReserveService {
 	private reserveRepository: IReserveRepository;
@@ -32,6 +32,32 @@ export class ReserveService {
 			reserveData
 		);
 		return registeredData;
+	}
+
+	async getAllReservea(userId: string) {
+		const reserves = await this.reserveRepository.getReserveById(userId);
+		return reserves;
+	}
+
+	async getReserveById(userId: string, reserveId: string) {
+		const reserve = await this.reserveRepository.getReserveById(
+			userId,
+			reserveId
+		);
+		return reserve;
+	}
+
+	async updateReserveById(
+		userId: string,
+		reserveId: string,
+		updateBody: UpdateQuery<Reserve>
+	): Promise<Reserve | null> {
+		const reserve = await this.reserveRepository.updateReserveById(
+			userId,
+			reserveId,
+			updateBody
+		);
+		return reserve;
 	}
 }
 
