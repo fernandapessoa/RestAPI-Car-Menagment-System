@@ -20,4 +20,21 @@ const registerCarSchema = Joi.object<Car>({
 	number_of_passengers: Joi.number().required(),
 });
 
-export { registerCarSchema };
+const updateCarSchema = Joi.object<Car>({
+	model: Joi.string().optional(),
+	color: Joi.string().optional(),
+	year: Joi.number().integer().min(1950).max(2023).optional(),
+	value_per_day: Joi.number().optional(),
+	accessories: Joi.array()
+		.items(
+			Joi.object({
+				description: Joi.string().required(),
+			})
+		)
+		.unique((a, b) => a.description === b.description) // validates that there are no repeated descriptions
+		.min(1)
+		.optional(),
+	number_of_passengers: Joi.number().optional(),
+}).min(1); // require at least one field to be updated
+
+export { registerCarSchema, updateCarSchema };
