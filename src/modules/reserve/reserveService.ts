@@ -2,7 +2,7 @@ import { IReserveRepository } from './IReserveRepository';
 import { reserveRepository } from './reserveRepository';
 import { Reserve } from './IReserve';
 import { convertDate } from '../../utils/convertDate';
-//import { AppError } from '../../errors/AppError';
+import { AppError } from '../../errors/AppError';
 import { UpdateQuery } from 'mongoose';
 
 export class ReserveService {
@@ -12,7 +12,7 @@ export class ReserveService {
 		this.reserveRepository = reserveRepository;
 	}
 
-	async registerReserve(query: any) {
+	async registerReserve(query: any): Promise<Reserve | null> {
 		let { start_date, end_date } = query;
 		const { id_car } = query;
 		const id_user = query.user._id;
@@ -34,19 +34,42 @@ export class ReserveService {
 		return registeredData;
 	}
 
-	async getAllReservea(userId: string) {
-		const reserves = await this.reserveRepository.getReserveById(userId);
+	async getAllReserves(userId: string): Promise<Reserve[]> {
+		const reserves = await this.reserveRepository.getAllReserves(userId);
 		return reserves;
 	}
 
-	async getReserveById(userId: string, reserveId: string) {
+	async getReserveById(
+		userId: string,
+		reserveId: string
+	): Promise<Reserve | null> {
 		const reserve = await this.reserveRepository.getReserveById(
 			userId,
 			reserveId
 		);
+		if (!reserve) {
+			throw new AppError(404, 'Reserve not found');
+		}
 		return reserve;
 	}
 
+	async getReserveByQueryParam(attributes: Record<string, string | number>) {
+		const reserves = await this.reserveRepository.getReserveByAttribute(
+			attributes
+		);
+		return reserves;
+	}
+
+	async deleteReserveById(
+		userId: string,
+		reserveId: string
+	): Promise<Reserve | null> {
+		const deletedReserve = await this.reserveRepository.deleteReserveById(
+			userId,
+			reserveId
+		);
+		return deletedReserve;
+	}
 	async updateReserveById(
 		userId: string,
 		reserveId: string,
