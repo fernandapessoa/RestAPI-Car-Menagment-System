@@ -12,8 +12,16 @@ export class MongoReserveRepository implements IReserveRepository {
 		return registeredReserve;
 	}
 
-	async getAllReserves(): Promise<Reserve[]> {
-		const reserves = await reserveSchema.find({});
+	async getAllReserves(
+		userId: string,
+		skip: number,
+		limit: number
+	): Promise<Reserve[]> {
+		const reserves = await reserveSchema
+			.find({ id_user: userId })
+			.select({ __v: false })
+			.skip(skip)
+			.limit(limit);
 		return reserves;
 	}
 
@@ -31,9 +39,15 @@ export class MongoReserveRepository implements IReserveRepository {
 	}
 
 	async getReserveByAttribute(
-		attributes: Record<string, string | number>
+		attributes: Record<string, string | number>,
+		skip: number,
+		limit: number
 	): Promise<Reserve[]> {
-		const reserve = await reserveSchema.find(attributes).select({ __v: false });
+		const reserve = await reserveSchema
+			.find(attributes)
+			.select({ __v: false })
+			.skip(skip)
+			.limit(limit);
 		return reserve;
 	}
 
