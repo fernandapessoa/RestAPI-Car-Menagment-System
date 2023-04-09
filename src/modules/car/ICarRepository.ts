@@ -13,6 +13,11 @@ interface ICarRepository {
 	): Promise<Car[]>;
 	deleteCarById(carId: string): Promise<Car | null>;
 	updateCar(carId: string, updateParams: unknown): Promise<Car | null>;
+	updateCarByAcessoryId(
+		carId: string,
+		acessoryId: string,
+		updateBody: unknown
+	): Promise<Car | null>;
 }
 
 export { ICarRepository };
