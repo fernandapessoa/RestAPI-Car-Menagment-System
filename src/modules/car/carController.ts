@@ -101,6 +101,27 @@ export class CarController {
 			data: car,
 		});
 	}
+
+	@CatchExpressError
+	async updateCarByAcessoryId(
+		req: Request,
+		res: Response,
+		_next: NextFunction
+	) {
+		const { carId } = req.params;
+		const acessoryUd = req.params.accerryId;
+		const updateBody = req.body;
+		const car = await this.carService.updateCarByAcessoryId(
+			carId,
+			acessoryUd,
+			updateBody
+		);
+
+		return res.status(200).json({
+			status: 'success',
+			data: car,
+		});
+	}
 }
 
 const carController = new CarController(carService);
