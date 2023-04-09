@@ -12,7 +12,7 @@ export class MongoReserveRepository implements IReserveRepository {
 		return registeredReserve;
 	}
 
-	async getAllReserves(): Promise<Reserve[] | null> {
+	async getAllReserves(): Promise<Reserve[]> {
 		const reserves = await reserveSchema.find({});
 		return reserves;
 	}
@@ -21,10 +21,19 @@ export class MongoReserveRepository implements IReserveRepository {
 		userId: string,
 		reserveId: string
 	): Promise<Reserve | null> {
-		const reserve = await reserveSchema.findOne({
-			id_user: userId,
-			_id: reserveId,
-		});
+		const reserve = await reserveSchema
+			.findOne({
+				_id: reserveId,
+				id_user: userId,
+			})
+			.select({ __v: false });
+		return reserve;
+	}
+
+	async getReserveByAttribute(
+		attributes: Record<string, string | number>
+	): Promise<Reserve[]> {
+		const reserve = await reserveSchema.find(attributes).select({ __v: false });
 		return reserve;
 	}
 
@@ -33,20 +42,22 @@ export class MongoReserveRepository implements IReserveRepository {
 		reserveId: string,
 		updateBody: UpdateQuery<Reserve>
 	): Promise<Reserve | null> {
-		const updatedReserve = await reserveSchema.findByIdAndUpdate(
-			reserveId,
-			updateBody,
-			{
+		const updatedReserve = await reserveSchema
+			.findByIdAndUpdate(reserveId, updateBody, {
 				new: true,
 				runValidators: true,
-			}
-		);
+			})
+			.select({ __v: false });
 		return updatedReserve;
 	}
 
-	async deleteReserveById(reserveId: string): Promise<Reserve | null> {
+	async deleteReserveById(
+		userId: string,
+		reserveId: string
+	): Promise<Reserve | null> {
 		const deletedReserve = await reserveSchema.findOneAndDelete({
 			_id: reserveId,
+			id_user: userId,
 		});
 		return deletedReserve;
 	}
