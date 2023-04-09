@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+
 import { UserService, userService } from './userService';
 import { Request, Response, NextFunction } from 'express';
 import { User } from './IUser';
@@ -25,7 +27,7 @@ export class UserController {
 
 	@CatchExpressError
 	async getUser(req: Request, res: Response, _next: NextFunction) {
-		const userId = req.params.id;
+		const userId = req.body.user._id.toString();
 		const user: User = await this.userService.getUser(userId);
 
 		return res.status(200).json({
@@ -36,7 +38,7 @@ export class UserController {
 
 	@CatchExpressError
 	async deleteUser(req: Request, res: Response, _next: NextFunction) {
-		const userId = req.params.id;
+		const userId = req.body.user._id.toString();
 		await this.userService.deleteUser(userId);
 
 		return res.status(204).json({
@@ -47,7 +49,7 @@ export class UserController {
 
 	@CatchExpressError
 	async updateUser(req: Request, res: Response, _next: NextFunction) {
-		const userId = req.params.id;
+		const userId = req.body.user._id.toString();
 		const updateBody = req.body;
 		const user: User = await this.userService.updateUser(userId, updateBody);
 
