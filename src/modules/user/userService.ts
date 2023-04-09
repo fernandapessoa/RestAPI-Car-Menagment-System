@@ -4,6 +4,7 @@ import { createToken, hashPass, comparePass } from '../../security/security';
 import { User } from './IUser';
 import axios from 'axios';
 import { AppError } from '../../errors/AppError';
+import { convertDate } from '../../utils/convertDate';
 
 export class UserService {
 	private userRepository: IUserRepository;
@@ -14,7 +15,7 @@ export class UserService {
 
 	async registerUser(userData: User) {
 		userData.password = await hashPass(userData.password);
-		userData.birth = new Date(userData.birth);
+		userData.birth = new Date(convertDate(userData.birth));
 
 		await axios
 			.get(`https://viacep.com.br/ws/${userData.cep}/json`)
