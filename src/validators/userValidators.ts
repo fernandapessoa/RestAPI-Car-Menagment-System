@@ -28,7 +28,7 @@ const registerUserSchema = Joi.object({
 		.pattern(/^\d{8}$/)
 		.required(),
 	qualified: Joi.string().valid('sim', 'não').required(),
-});
+}).options({ abortEarly: false });
 
 const updateUserSchema = Joi.object({
 	name: Joi.string().min(3).max(65).optional(),
@@ -53,6 +53,8 @@ const updateUserSchema = Joi.object({
 		.pattern(/^\d{8}$/)
 		.optional(),
 	qualified: Joi.string().valid('sim', 'não').optional(),
-}).unknown(true);
+})
+	.unknown(true)
+	.options({ abortEarly: false });
 
 export { registerUserSchema, updateUserSchema };
