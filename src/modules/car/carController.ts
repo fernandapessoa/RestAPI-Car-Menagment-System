@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+
 import { CarService, carService } from './carService';
 import { Request, Response, NextFunction } from 'express';
 import { Car } from './ICar';
 import { CatchExpressError } from '../../decorators/CatchExpressError';
+import { pagination } from '../../utils/pagination';
 
 export class CarController {
 	private carService: CarService;
@@ -22,21 +25,41 @@ export class CarController {
 	}
 
 	@CatchExpressError
-	async gatCars(req: Request, res: Response, _next: NextFunction) {
-		if (req.query) {
-			const attributes = req.query as Record<string, string | number>;
-			const filteredCars = await this.carService.getCarByQueryParam(attributes);
+	async getCars(req: Request, res: Response, _next: NextFunction) {
+		const [skip, limit, offset, offsets, queryparam, filteredKeys] =
+			pagination(req);
+		if (queryparam) {
+			const attributes = filteredKeys.reduce((acc, key) => {
+				return {
+					...acc,
+					[key]: req.query[key],
+				};
+			}, {}) as Record<string, string | number>;
+
+			const filteredCars = await this.carService.getCarByQueryParam(
+				attributes,
+				skip,
+				limit
+			);
+
 			return res.status(200).json({
 				status: 'success',
 				data: filteredCars,
 				total: filteredCars.length,
+				limit: limit,
+				offset: offset,
+				offsets: offsets,
 			});
 		}
-		const cars = await this.carService.getAllCars();
+
+		const cars = await this.carService.getAllCars(skip, limit);
 		return res.status(200).json({
 			status: 'success',
 			data: cars,
 			total: cars.length,
+			limit: limit,
+			offset: offset,
+			offsets: offsets,
 		});
 	}
 
