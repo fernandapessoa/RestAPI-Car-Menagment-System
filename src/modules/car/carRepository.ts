@@ -42,6 +42,19 @@ export class MongoCarRepository implements ICarRepository {
 		return updatedCar;
 	}
 
+	async updateCarByAcessoryId(
+		carId: string,
+		acessoryId: string,
+		updateBody: UpdateQuery<Car>
+	): Promise<Car | null> {
+		const updatedCar = await carSchema.findOneAndUpdate(
+			{ _id: carId, 'accessories._id': acessoryId },
+			updateBody,
+			{ new: true, runValidators: true }
+		);
+		return updatedCar;
+	}
+
 	async getCarByAttribute(
 		attributes: Record<string, string | number>,
 		skip: number,
