@@ -9,7 +9,7 @@ import { carAuth } from '../middlewares/auth';
 const carsRouter = Router();
 
 carsRouter.post('/', carAuth, validateCarData, carController.registerCar);
-carsRouter.get('/', carAuth, carController.getCars); //get all or by query param
+carsRouter.get('/', carAuth, carController.getCars);
 carsRouter.get('/:id', carAuth, carController.getCarById);
 carsRouter.delete('/:id', carAuth, carController.deleteCarById);
 carsRouter.put(
@@ -18,6 +18,11 @@ carsRouter.put(
 	validateUpdateCarData,
 	carController.updateCarById
 );
-carsRouter.patch('/:carId/accessories/:accerryId', carAuth);
+carsRouter.patch(
+	'/:carId/accessories/:accerryId',
+	carAuth,
+	validateCarData,
+	carController.updateCarByAcessoryId
+);
 
 export { carsRouter };
