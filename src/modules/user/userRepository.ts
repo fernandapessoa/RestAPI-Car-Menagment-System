@@ -11,7 +11,7 @@ export class MongoUserRepository implements IUserRepository {
 	}
 
 	async getUser(userId: string): Promise<User | null> {
-		const user = await userSchema.findById(userId);
+		const user = await userSchema.findById(userId).select({ __v: false });
 		return user;
 	}
 
@@ -24,10 +24,12 @@ export class MongoUserRepository implements IUserRepository {
 		userId: string,
 		updateBody: UpdateQuery<User>
 	): Promise<User | null> {
-		const updatedUser = await userSchema.findByIdAndUpdate(userId, updateBody, {
-			new: true,
-			runValidators: true,
-		});
+		const updatedUser = await userSchema
+			.findByIdAndUpdate(userId, updateBody, {
+				new: true,
+				runValidators: true,
+			})
+			.select({ __v: false });
 		return updatedUser;
 	}
 
