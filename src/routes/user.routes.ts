@@ -10,7 +10,8 @@ import {
 const usersRouter = Router();
 
 usersRouter.post('/', validateUserData, userController.registerUser);
-usersRouter.get('/', auth, userController.getUser);
+usersRouter.get('/', auth, userController.getAllUsers);
+usersRouter.get('/me', auth, userController.getUser);
 usersRouter.patch('/', auth, validateUpdateUserData, userController.updateUser);
 usersRouter.delete('/', auth, userController.deleteUser);
 
