@@ -39,6 +39,14 @@ export class UserService {
 		return token;
 	}
 
+	async getAllUsers() {
+		const users = await this.userRepository.getAllUsers();
+
+		if (!users) throw new Error('User not found');
+
+		return users;
+	}
+
 	async getUser(userId: string) {
 		const user = await this.userRepository.getUser(userId);
 
