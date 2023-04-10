@@ -20,6 +20,16 @@ interface IReserveRepository {
 		limit: number
 	): Promise<Reserve[]>;
 	deleteReserveById(userId: string, reserveId: string): Promise<Reserve | null>;
+	findUserReserve(
+		id_user: string,
+		start_date: Date,
+		end_date: Date
+	): Promise<Reserve | null>;
+	findCarReserve(
+		id_car: string,
+		start_date: Date,
+		end_date: Date
+	): Promise<Reserve | null>;
 }
 
 export { IReserveRepository };
