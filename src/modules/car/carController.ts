@@ -109,7 +109,7 @@ export class CarController {
 		_next: NextFunction
 	) {
 		const { carId } = req.params;
-		const acessoryUd = req.params.accerryId;
+		const acessoryUd = req.params.accessoryId;
 		const updateBody = req.body;
 		const car = await this.carService.updateCarByAcessoryId(
 			carId,
