@@ -38,6 +38,11 @@ export class MongoUserRepository implements IUserRepository {
 		return updatedUser;
 	}
 
+	async findUserByCPF(cpf: string): Promise<User | null> {
+		const user = await userSchema.findOne({ cpf: cpf });
+		return user;
+	}
+
 	async findUserByEmail(email: string): Promise<User | null> {
 		const user = await userSchema.findOne({ email });
 		return user;
