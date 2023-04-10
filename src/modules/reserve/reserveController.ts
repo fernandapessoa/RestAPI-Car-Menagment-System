@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars*/
 
 import { ReserveService, reserveService } from './reserveService';
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { Reserve } from './IReserve';
 import { CatchExpressError } from '../../decorators/CatchExpressError';
 import { pagination } from '../../utils/pagination';
+import { AppError } from '../../errors/AppError';
+import { AuthenticatedRequest } from '../../type/IRequest';
 
 export class ReserveController {
 	private reserveService: ReserveService;
@@ -14,8 +16,17 @@ export class ReserveController {
 	}
 
 	@CatchExpressError
-	async registerReserve(req: Request, res: Response, _next: NextFunction) {
+	async registerReserve(
+		req: AuthenticatedRequest,
+		res: Response,
+		_next: NextFunction
+	) {
+		if (req.authenticatedUser.qualified !== 'sim') {
+			throw new AppError(400, 'User must to be qualified');
+		}
 		const reserveData: Reserve = req.body;
+		reserveData.id_user = req.authenticatedUser._id.toString();
+
 		const reserve = await this.reserveService.registerReserve(reserveData);
 
 		return res.status(201).json({
@@ -25,8 +36,12 @@ export class ReserveController {
 	}
 
 	@CatchExpressError
-	async getReserve(req: Request, res: Response, _next: NextFunction) {
-		const userId: string = req.body.user._id;
+	async getReserve(
+		req: AuthenticatedRequest,
+		res: Response,
+		_next: NextFunction
+	) {
+		const userId: string = req.authenticatedUser._id.toString();
 		const [skip, limit, offset, offsets, queryparam, filteredKeys] =
 			pagination(req);
 
@@ -69,8 +84,12 @@ export class ReserveController {
 	}
 
 	@CatchExpressError
-	async getReserveById(req: Request, res: Response, _next: NextFunction) {
-		const userId: string = req.body.user._id.toString();
+	async getReserveById(
+		req: AuthenticatedRequest,
+		res: Response,
+		_next: NextFunction
+	) {
+		const userId: string = req.authenticatedUser._id.toString();
 		const reserveId: string = req.params.id;
 
 		const reserve = await this.reserveService.getReserveById(userId, reserveId);
@@ -81,8 +100,12 @@ export class ReserveController {
 	}
 
 	@CatchExpressError
-	async deleteReserveById(req: Request, res: Response, _next: NextFunction) {
-		const userId: string = req.body.user._id;
+	async deleteReserveById(
+		req: AuthenticatedRequest,
+		res: Response,
+		_next: NextFunction
+	) {
+		const userId: string = req.authenticatedUser._id;
 		const reserveId = req.params.id;
 
 		const deletedReserve = await this.reserveService.deleteReserveById(
@@ -103,8 +126,12 @@ export class ReserveController {
 	}
 
 	@CatchExpressError
-	async updateReserveById(req: Request, res: Response, _next: NextFunction) {
-		const userId = req.body.user._id;
+	async updateReserveById(
+		req: AuthenticatedRequest,
+		res: Response,
+		_next: NextFunction
+	) {
+		const userId = req.authenticatedUser._id;
 		const reserveId = req.params.id;
 		const updateBody = req.body;
 
