@@ -30,6 +30,7 @@ interface IReserveRepository {
 		start_date: Date,
 		end_date: Date
 	): Promise<Reserve | null>;
+	deleteAllUserReserves(userId: string): Promise<void>;
 }
 
 export { IReserveRepository };
