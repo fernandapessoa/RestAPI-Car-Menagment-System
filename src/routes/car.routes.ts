@@ -19,9 +19,8 @@ carsRouter.put(
 	carController.updateCarById
 );
 carsRouter.patch(
-	'/:carId/accessories/:accerryId',
+	'/:carId/accessories/:accessoryId',
 	carAuth,
-	validateCarData,
 	carController.updateCarByAcessoryId
 );
 
