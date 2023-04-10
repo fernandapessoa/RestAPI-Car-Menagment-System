@@ -1,0 +1,1373 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Final challenge - Compass UOL PB",
+    "version": "1.0.0",
+    "description": "Rest API for Car Reservation Management System using MongoDB and Mongoose.\n\n Final Challenge of the Compass UOL Scholarship Program: Back-end Journey (Node.js) - AWS Cloud Context - 2023"
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Endpoints for managing users"
+    },
+    {
+      "name": "Cars",
+      "description": "Endpoints for managing user cars"
+    },
+    {
+      "name": "Reserves",
+      "description": "Endpoints for managing user reserves"
+    }
+  ],
+  "paths": {
+    "/api/v1/user": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "password",
+                  "cpf",
+                  "birth",
+                  "cep",
+                  "qualified"
+
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the user",
+                    "example": "Fulano de Tal"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email of the user",
+                    "example": "example@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Password of the user",
+                    "example": "password123"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "description": "CPF of the user",
+                    "example": "529.982.247-25"
+                  },
+                  "birth": {
+                    "type": "string",
+                    "description": "Birth date of the user",
+                    "example": "01/02/2000"
+                  },
+                  "cep": {
+                    "type": "string",
+                    "description": "CEP of the user",
+                    "example": "96200320"
+                  },
+                  "qualified": {
+                    "type": "string",
+                    "description": "Qualified user or not",
+                    "example": "sim"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+               "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the user",
+                    "example": "Ciclano de Tal"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email of the user",
+                    "example": "example@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Password of the user",
+                    "example": "password123"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "description": "CPF of the user",
+                    "example": "529.982.247-25"
+                  },
+                  "birth": {
+                    "type": "string",
+                    "description": "Birth date of the user",
+                    "example": "01/02/2000"
+                  },
+                  "cep": {
+                    "type": "string",
+                    "description": "CEP of the user",
+                    "example": "96200320"
+                  },
+                  "qualified": {
+                    "type": "string",
+                    "description": "Qualified user or not",
+                    "example": "sim"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get all users",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the user"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Email of the user"
+                    },
+                    "cpf": {
+                      "type": "string",
+                      "description": "CPF of the user"
+                    },
+                    "birth": {
+                      "type": "string",
+                      "description": "Birth date of the user"
+                    },
+                    "cep": {
+                      "type": "string",
+                      "description": "CEP of the user"
+                    },
+                    "qualified": {
+                      "type": "boolean",
+                      "description": "Qualified user or not"
+                    },
+                    "patio": {
+                      "type": "string"
+                    },
+                    "complement": {
+                      "type": "string"
+                    },
+                    "neighborhood": {
+                      "type": "string"
+                    },
+                    "locality": {
+                      "type": "string"
+                    },
+                    "uf": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete user",
+
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    
+    },
+    "/api/v1/user/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user to get",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the user"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Email of the user"
+                    },
+                    "cpf": {
+                      "type": "string",
+                      "description": "CPF of the user"
+                    },
+                    "birth": {
+                      "type": "string",
+                      "description": "Birth date of the user"
+                    },
+                    "cep": {
+                      "type": "string",
+                      "description": "CEP of the user"
+                    },
+                    "qualified": {
+                      "type": "boolean",
+                      "description": "Qualified user or not"
+                    },
+                    "patio": {
+                      "type": "string"
+                    },
+                    "complement": {
+                      "type": "string"
+                    },
+                    "neighborhood": {
+                      "type": "string"
+                    },
+                    "locality": {
+                      "type": "string"
+                    },
+                    "uf": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/user/me": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get the current user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the user"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Email of the user"
+                    },
+                    "cpf": {
+                      "type": "string",
+                      "description": "CPF of the user"
+                    },
+                    "birth": {
+                      "type": "string",
+                      "description": "Birth date of the user"
+                    },
+                    "cep": {
+                      "type": "string",
+                      "description": "CEP of the user"
+                    },
+                    "qualified": {
+                      "type": "boolean",
+                      "description": "Qualified user or not"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }, 
+    "/api/v1/user/authenticate": {
+      "post": {
+        "tags": ["Users"],
+        "description": "Authenticate a user and return the user data",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Email of the user",
+                    "example": "example@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Password of the user",
+                    "example": "password123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the user"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Email of the user"
+                    },
+                    "cpf": {
+                      "type": "string",
+                      "description": "CPF of the user"
+                    },
+                    "birth": {
+                      "type": "string",
+                      "description": "Birth date of the user"
+                    },
+                    "cep": {
+                      "type": "string",
+                      "description": "CEP of the user"
+                    },
+                    "qualified": {
+                      "type": "boolean",
+                      "description": "Qualified user or not"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/car": {
+      "post": {
+        "tags": [
+          "Cars"
+        ],
+        "summary": "Register a new car",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "example": "model example"
+                  },
+                  "color": {
+                    "type": "string",
+                    "example": "colorexample"
+                  },
+                  "year": {
+                    "type": "string",
+                    "example": "2020"
+                  },
+                  "value_per_day": {
+                    "type": "number",
+                    "example": 100
+                  },
+                  "accessories": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "description": {
+                          "type": "string",
+                          "example": "air conditioner1"
+                        }
+                      }
+                    }
+                  },
+                  "number_of_passengers": {
+                    "type": "integer",
+                    "example": 5
+                  }
+                },
+                "required": [
+                  "model",
+                  "color",
+                  "year",
+                  "value_per_day",
+                  "accessories",
+                  "number_of_passengers"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Cars"
+        ],
+        "summary": "Get cars",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of items per page",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page of the result",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "model",
+            "in": "query",
+            "required": false,
+            "description": "Model of the car",
+            "schema": {
+              "type": "string",
+              "default": "GM S10 2.8"
+            }
+          },
+          {
+            "name": "color",
+            "in": "query",
+            "required": false,
+            "description": "Color of the car",
+            "schema": {
+              "type": "string",
+              "default": "White"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "description": "Year of the car",
+            "schema": {
+              "type": "integer",
+              "default": "2000"
+            }
+          },
+          {
+            "name": "value_per_day",
+            "in": "query",
+            "required": false,
+            "description": "Value per day of the car rental",
+            "schema": {
+              "type": "number", 
+              "default": "250"
+            }
+          },
+          {
+            "name": "number_of_passengers",
+            "in": "query",
+            "required": false,
+            "description": "Number of passengers the car can carry",
+            "schema": {
+              "type": "integer",
+              "default": "5"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "data",
+                    "total",
+                    "limit",
+                    "offset",
+                    "offsets"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Status of the request"
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "Array of cars",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "_id",
+                          "model",
+                          "color",
+                          "year",
+                          "value_per_day",
+                          "accessories",
+                          "number_of_passengers"
+                        ],
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "description": "ID of the car"
+                          },
+                          "model": {
+                            "type": "string",
+                            "description": "Model of the car"
+                          },
+                          "color": {
+                            "type": "string",
+                            "description": "Color of the car"
+                          },
+                          "year": {
+                            "type": "string",
+                            "description": "Year of the car"
+                          },
+                          "value_per_day": {
+                            "type": "number",
+                            "description": "Value per day of the car"
+                          },
+                          "accessories": {
+                            "type": "array",
+                            "description": "Array of accessories",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "_id",
+                                "description"
+                              ],
+                              "properties": {
+                                "_id": {
+                                  "type": "string",
+                                  "description": "ID of the accessory"
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "description": "Description of the accessory"
+                                }
+                              }
+                            }
+                          },
+                          "number_of_passengers": {
+                            "type": "integer",
+                            "description": "Number of passengers of the car"
+                          }
+                        }
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "description": "Total number of items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "Maximum number of items per page"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "Number of items to skip before starting to collect the result set"
+                    },
+                    "offsets": {
+                      "type": "integer",
+                      "description": "Total number of page"
+                    },
+                    "responses": {
+                      "200": {
+                        "description": "Success",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "$ref": "#/components/schemas/CarListResponse"
+                            }
+                          }
+                        }
+                      },
+                      "400": {
+                        "description": "Bad Request",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "$ref": "#/components/schemas/BadRequestResponse"
+                            }
+                          }
+                        }
+                      },
+                      "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "$ref": "#/components/schemas/InternalServerErrorResponse"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "parameters": {
+                      "query": {
+                        "type": "object",
+                        "properties": {
+                          "limit": {
+                            "type": "integer",
+                            "description": "Maximum number of items per page",
+                            "example": 10
+                          },
+                          "offset": {
+                            "type": "integer",
+                            "description": "Number of items to skip before starting to collect the result set",
+                            "example": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    
+    },
+    "/api/v1/car/{id}": {
+        "get": {
+          "tags": [
+            "Cars"
+          ],
+          "summary": "Get a car by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the car",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success response",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "model": {
+                        "type": "string"
+                      },
+                      "color": {
+                        "type": "string"
+                      },
+                      "year": {
+                        "type": "string"
+                      },
+                      "value_per_day": {
+                        "type": "number"
+                      },
+                      "accessories": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "description": {
+                              "type": "string"
+                            },
+                            "_id": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "number_of_passengers": {
+                        "type": "number"
+                      },
+                      "_id": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Car not found"
+            }
+          }
+        },
+      
+      "delete": {
+        "tags": [
+          "Cars"
+        ],
+        "summary": "Deletes a car by ID",
+        "description": "Deletes the car with the specified ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the car to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Car deleted successfully"
+          },
+          "404": {
+            "description": "Car not found"
+          }
+        }
+      },
+    "put": {
+      "tags": [
+        "Cars"
+      ],
+      "summary": "Update an existing car",
+      "description": "",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "ID of car to update",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "consumes": [
+        "application/json"
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "requestBody": {
+        "description": "Car object that needs to be updated",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "model": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string"
+                },
+                "year": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "value_per_day": {
+                  "type": "number",
+                  "format": "double"
+                },
+                "accessories": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "_id": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "number_of_passengers": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Car updated successfully"
+        },
+        "400": {
+          "description": "Invalid input data"
+        },
+        "404": {
+          "description": "Car not found"
+        }
+      }
+    }
+  },
+    "/api/v1/reserve/": {
+      "post": {
+        "tags": [
+          "Reserves"
+        ],
+        "summary": "Register a car reservation",
+        "description": "Register a car reservation and return the reservation information",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Reservation information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "start_date": {
+                  "type": "string",
+                  "description": "Start date of the reservation (format: MM/DD/YYYY)"
+                },
+                "end_date": {
+                  "type": "string",
+                  "description": "End date of the reservation (format: MM/DD/YYYY)"
+                },
+                "id_car": {
+                  "type": "string",
+                  "description": "ID of the car being reserved"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reservation information",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "start_date": {
+                  "type": "string",
+                  "description": "Start date of the reservation (format: YYYY-MM-DDTHH:mm:ss.sssZ)"
+                },
+                "end_date": {
+                  "type": "string",
+                  "description": "End date of the reservation (format: YYYY-MM-DDTHH:mm:ss.sssZ)"
+                },
+                "id_car": {
+                  "type": "string",
+                  "description": "ID of the car being reserved"
+                },
+                "id_user": {
+                  "type": "string",
+                  "description": "ID of the user making the reservation"
+                },
+                "final_value": {
+                  "type": "number",
+                  "description": "Final value of the reservation"
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "ID of the reservation"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Reserves"
+        ],
+        "summary": "Get all reservations based on query parameters",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of reservations per page",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "Start date range for reservations",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "End date range for reservations",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id_car",
+            "in": "query",
+            "description": "ID of the car reserved",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id_user",
+            "in": "query",
+            "description": "ID of the user who made the reservation",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "final_value",
+            "in": "query",
+            "description": "Final value of the reservation",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Reservation"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+
+  },
+  "/api/v1/reserve/{id}": {
+    "get": {
+      "tags": [
+        "Reserves"
+      ],
+      "summary": "Get reserve by ID",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "ID of the reserve to retrieve",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Returns a reserve object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "start_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-05-05T04:00:00.000Z"
+                  },
+                  "end_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-05-06T04:00:00.000Z"
+                  },
+                  "id_car": {
+                    "type": "string",
+                    "example": "6433d6dd4033375e93a2e29a"
+                  },
+                  "id_user": {
+                    "type": "string",
+                    "example": "64337f16205efc534ea347b0"
+                  },
+                  "final_value": {
+                    "type": "integer",
+                    "example": 50
+                  },
+                  "_id": {
+                    "type": "string",
+                    "example": "6433d6e64033375e93a2e2a4"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Reserve not found"
+        }
+      }
+    },
+    "delete": {
+      "tags": [
+        "Reserves"
+      ],
+      "summary": "Delete a reserve by ID",
+      "description": "",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "ID of the reserve to delete",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "204": {
+          "description": "Reservation deleted successfully"
+        },
+        "404": {
+          "description": "Reservation not found"
+        }
+      }
+    },
+    "put": {
+      "tags": [
+          "Reserves"
+      ],
+      "summary": "Update a reservation",
+      "description": "",
+      "produces": [
+          "application/json"
+      ],
+      "parameters": [
+          {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the reservation to update",
+              "required": true,
+              "type": "string",
+              "example": "6433d6e64033375e93a2e2a4"
+          },
+          {
+              "in": "body",
+              "name": "body",
+              "description": "New values for the reservation attributes",
+              "required": true,
+              "schema": {
+                  "type": "object",
+                  "properties": {
+                      "start_date": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-05-05T04:00:00.000Z"
+                      },
+                      "end_date": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-05-06T04:00:00.000Z"
+                      },
+                      "id_car": {
+                          "type": "string",
+                          "example": "6433d6dd4033375e93a2e29a"
+                      },
+                      "id_user": {
+                          "type": "string",
+                          "example": "64337f16205efc534ea347b0"
+                      },
+                      "final_value": {
+                          "type": "integer",
+                          "example": 50
+                      }
+                  }
+              }
+          }
+      ],
+      "responses": {
+          "200": {
+              "description": "OK",
+              "schema": {
+                  "type": "object",
+                  "properties": {
+                      "start_date": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-05-05T04:00:00.000Z"
+                      },
+                      "end_date": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-05-06T04:00:00.000Z"
+                      },
+                      "id_car": {
+                          "type": "string",
+                          "example": "6433d6dd4033375e93a2e29a"
+                      },
+                      "id_user": {
+                          "type": "string",
+                          "example": "64337f16205efc534ea347b0"
+                      },
+                      "final_value": {
+                          "type": "integer",
+                          "example": 50
+                      },
+                      "_id": {
+                          "type": "string",
+                          "example": "6433d6e64033375e93a2e2a4"
+                      }
+                  }
+              }
+          },
+          "400": {
+              "description": "Bad request",
+              "schema": {
+                  "type": "object",
+                  "properties": {
+                      "message": {
+                          "type": "string",
+                          "example": "Invalid request parameters"
+                      }
+                  }
+              }
+          },
+          "404": {
+              "description": "Reservation not found",
+              "schema": {
+                  "type": "object",
+                  "properties": {
+                      "message": {
+                          "type": "string",
+                          "example": "Reservation not found"
+                      }
+                  }
+              }
+          }
+        }
+      }
+  },
+    "/api/v1/car/{carId}/accessories/{accessoryId}": {
+      "patch": {
+        "tags": [
+          "Cars"
+        ],
+        "summary": "Update an accessory of a car",
+        "description": "Updates the description of an accessory of a car by its ID.",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "description": "ID of the car whose accessory will be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "accessoryId",
+            "in": "path",
+            "description": "ID of the accessory to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Accessory object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AccessoryUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Accessory updated successfully",
+            "schema": {
+              "$ref": "#/definitions/Accessory"
+            }
+          },
+          "404": {
+            "description": "Car or accessory not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Accessory": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "The ID of the accessory"
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of the accessory"
+        }
+      }
+    },
+    "AccessoryUpdate": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "The updated description of the accessory"
+        }
+      }
+    }
+  }
+  
+}
