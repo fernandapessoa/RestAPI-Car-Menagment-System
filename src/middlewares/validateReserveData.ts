@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import {
 	registerReserveSchema,
 	updateReserveSchema,
@@ -6,15 +6,15 @@ import {
 import { Reserve } from '../modules/reserve/IReserve';
 import { ValidationError } from 'joi';
 import { AppError } from '../errors/AppError';
+import { AuthenticatedRequest } from './../type/IRequest';
 
 export async function validateReserveData(
-	req: Request,
+	req: AuthenticatedRequest,
 	res: Response,
 	next: NextFunction
 ) {
 	try {
 		const reserveData: Reserve = req.body;
-
 		await registerReserveSchema.validateAsync(reserveData);
 		return next();
 	} catch (err) {
@@ -26,13 +26,12 @@ export async function validateReserveData(
 }
 
 export async function validateUpdateReserveData(
-	req: Request,
+	req: AuthenticatedRequest,
 	res: Response,
 	next: NextFunction
 ) {
 	try {
 		const reserveData = req.body;
-
 		await updateReserveSchema.validateAsync(reserveData);
 		return next();
 	} catch (err) {
