@@ -5,7 +5,6 @@ const CarSchema = new Schema<Car>(
 	{
 		model: {
 			type: String,
-			unique: true,
 			required: [true, 'The car model is required'],
 			trim: true,
 		},
