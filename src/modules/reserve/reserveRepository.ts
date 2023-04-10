@@ -114,6 +114,10 @@ export class MongoReserveRepository implements IReserveRepository {
 
 		return reserves;
 	}
+
+	async deleteAllUserReserves(userId: string): Promise<void> {
+		await reserveSchema.deleteMany({ id_user: userId });
+	}
 }
 
 const reserveRepository = new MongoReserveRepository();
