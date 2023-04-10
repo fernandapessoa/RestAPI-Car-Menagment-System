@@ -15,9 +15,31 @@ export class ReserveService {
 		this.reserveRepository = reserveRepository;
 	}
 
-	async registerReserve(query: any): Promise<Reserve | null> {
-		const reserveData = await validateReserve(query);
-
+	async registerReserve(reserve: any): Promise<Reserve | null> {
+		const reserveData = await validateReserve(reserve);
+		const isReserveDateAlreadyInUse =
+			await this.reserveRepository.findUserReserve(
+				reserve.id_user,
+				reserve.start_date,
+				reserve.end_date
+			);
+		if (isReserveDateAlreadyInUse) {
+			throw new AppError(
+				400,
+				'User already has a reservation on the requested date'
+			);
+		}
+		const isCarReservatedOnDate = await this.reserveRepository.findCarReserve(
+			reserve.id_car,
+			reserve.start_date,
+			reserve.end_date
+		);
+		if (isCarReservatedOnDate) {
+			throw new AppError(
+				400,
+				'Car is already reserveted on the requested date'
+			);
+		}
 		const registeredData = await this.reserveRepository.registerReserve(
 			reserveData
 		);
