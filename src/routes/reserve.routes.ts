@@ -14,14 +14,14 @@ reserveRouter.post(
 	validateReserveData,
 	reserveController.registerReserve
 );
-reserveRouter.get(
-	'/',
-	auth,
-	validateUpdateReserveData,
-	reserveController.getReserve
-);
+reserveRouter.get('/', auth, reserveController.getReserve);
 reserveRouter.get('/:id', auth, reserveController.getReserveById);
 reserveRouter.delete('/:id', auth, reserveController.deleteReserveById);
-reserveRouter.put('/:id', auth, reserveController.updateReserveById);
+reserveRouter.put(
+	'/:id',
+	auth,
+	validateUpdateReserveData,
+	reserveController.updateReserveById
+);
 
 export { reserveRouter };
