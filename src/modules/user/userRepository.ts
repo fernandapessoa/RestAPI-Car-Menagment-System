@@ -10,6 +10,11 @@ export class MongoUserRepository implements IUserRepository {
 		return registeredUser;
 	}
 
+	async getAllUsers(): Promise<User[] | null> {
+		const users = await userSchema.find({}).select({ __v: false });
+		return users;
+	}
+
 	async getUser(userId: string): Promise<User | null> {
 		const user = await userSchema.findById(userId).select({ __v: false });
 		return user;
