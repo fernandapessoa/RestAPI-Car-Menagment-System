@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-unused-vars */
 
 import { Reserve } from './IReserve';
 import { IReserveRepository } from './IReserveRepository';
@@ -74,6 +73,46 @@ export class MongoReserveRepository implements IReserveRepository {
 			id_user: userId,
 		});
 		return deletedReserve;
+	}
+
+	async findUserReserve(
+		id_user: string,
+		start_date: Date,
+		end_date: Date
+	): Promise<Reserve | null> {
+		const reserves = await reserveSchema.findOne({
+			id_user,
+			$or: [
+				{
+					start_date: { $gte: new Date(start_date), $lte: new Date(end_date) },
+				},
+				{
+					end_date: { $gte: new Date(start_date), $lte: new Date(end_date) },
+				},
+			],
+		});
+
+		return reserves;
+	}
+
+	async findCarReserve(
+		id_car: string,
+		start_date: Date,
+		end_date: Date
+	): Promise<Reserve | null> {
+		const reserves = await reserveSchema.findOne({
+			id_car,
+			$or: [
+				{
+					start_date: { $gte: new Date(start_date), $lte: new Date(end_date) },
+				},
+				{
+					end_date: { $gte: new Date(start_date), $lte: new Date(end_date) },
+				},
+			],
+		});
+
+		return reserves;
 	}
 }
 
