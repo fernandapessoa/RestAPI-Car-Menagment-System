@@ -6,8 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "start:dev": "tsnd --respawn --transpile-only --rs src/server.ts",
-    "test": "jest"
+    "start:dev": "tsnd --respawn --transpile-only --rs src/server.ts"
   },
   "repository": {
     "type": "git",
