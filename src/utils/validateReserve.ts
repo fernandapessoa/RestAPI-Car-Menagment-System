@@ -3,16 +3,16 @@ import { AppError } from '../errors/AppError';
 import { carService } from '../modules/car/carService';
 import { finalValue } from './finalValue';
 
-async function validateReserve(query: any): Promise<{
+async function validateReserve(reserve: any): Promise<{
 	start_date: Date;
 	end_date: Date;
 	id_car: string;
 	id_user: string;
 	final_value: number;
 }> {
-	let { start_date, end_date } = query;
-	const { id_car } = query;
-	const id_user = query.user._id;
+	let { start_date, end_date } = reserve;
+	const { id_car } = reserve;
+	const { id_user } = reserve;
 
 	const car = await carService.getCarById(id_car);
 	if (!car) throw new AppError(404, `Car id ${id_car} does not exist`);
