@@ -8,6 +8,7 @@ interface IUserRepository {
 	deleteUser(userId: string): Promise<User | null>;
 	updateUser(userId: string, updateParams: unknown): Promise<User | null>;
 	findUserByEmail(email: string): Promise<User | null>;
+	findUserByCPF(cpf: string): Promise<User | null>;
 }
 
 export { IUserRepository };
