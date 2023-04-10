@@ -26,7 +26,6 @@ export class UserController {
 
 		return res.status(201).json({
 			status: 'success',
-			token: token,
 		});
 	}
 
