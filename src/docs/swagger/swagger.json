@@ -1,35 +1,354 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-      "title": "Final challenge - Compass UOL PB",
-      "version": "1.0.0",
-      "description": "Rest API for Car Reservation Management System using MongoDB and Mongoose.\n\n Final Challenge of the Compass UOL Scholarship Program: Back-end Journey (Node.js) - AWS Cloud Context - 2023"
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Final challenge - Compass UOL PB",
+    "version": "1.0.0",
+    "description": "Rest API for Car Reservation Management System using MongoDB and Mongoose.\n\n Final Challenge of the Compass UOL Scholarship Program: Back-end Journey (Node.js) - AWS Cloud Context - 2023"
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Endpoints for managing users"
     },
-    "components": {
-      "securitySchemes": {
-        "bearerAuth": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
+    {
+      "name": "Cars",
+      "description": "Endpoints for managing user cars"
+    }
+  ],
+  "paths": {
+    "/api/v1/user": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the user"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email of the user"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Password of the user"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "description": "CPF of the user"
+                  },
+                  "birth": {
+                    "type": "string",
+                    "description": "Birth date of the user"
+                  },
+                  "cep": {
+                    "type": "string",
+                    "description": "CEP of the user"
+                  },
+                  "qualified": {
+                    "type": "string",
+                    "description": "Qualified user or not"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the user"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email of the user"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Password of the user"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "description": "CPF of the user"
+                  },
+                  "birth": {
+                    "type": "string",
+                    "description": "Birth date of the user"
+                  },
+                  "cep": {
+                    "type": "string",
+                    "description": "CEP of the user"
+                  },
+                  "qualified": {
+                    "type": "boolean",
+                    "description": "Qualified user or not"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get all users",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Name of the user"
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "Email of the user"
+                      },
+                      "cpf": {
+                        "type": "string",
+                        "description": "CPF of the user"
+                      },
+                      "birth": {
+                        "type": "string",
+                        "description": "Birth date of the user"
+                      },
+                      "cep": {
+                        "type": "string",
+                        "description": "CEP of the user"
+                      },
+                      "qualified": {
+                        "type": "boolean",
+                        "description": "Qualified user or not"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete user",
+
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "User not found"
+          }
         }
       }
+    
     },
-    "security": [
-      {
-        "bearerAuth": []
+    "/api/v1/user/{userId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get user by id",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user to get",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the user"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Email of the user"
+                    },
+                    "cpf": {
+                      "type": "string",
+                      "description": "CPF of the user"
+                    },
+                    "birth": {
+                      "type": "string",
+                      "description": "Birth date of the user"
+                    },
+                    "cep": {
+                      "type": "string",
+                      "description": "CEP of the user"
+                    },
+                    "qualified": {
+                      "type": "boolean",
+                      "description": "Qualified user or not"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
-    ],
-    "apis": [
-      "./src/routes/*.ts"
-    ],
-    "tags": [
-      {
-        "name": "Users",
-        "description": "Endpoints for managing users"
-      },
-      {
-        "name": "Cars",
-        "description": "Endpoints for managing user cars"
+      
+      
+    },
+    "/api/v1/user/me": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get the current user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the user"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Email of the user"
+                    },
+                    "cpf": {
+                      "type": "string",
+                      "description": "CPF of the user"
+                    },
+                    "birth": {
+                      "type": "string",
+                      "description": "Birth date of the user"
+                    },
+                    "cep": {
+                      "type": "string",
+                      "description": "CEP of the user"
+                    },
+                    "qualified": {
+                      "type": "boolean",
+                      "description": "Qualified user or not"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
       }
-    ]
+    }
+  }
 }
+      
+    
