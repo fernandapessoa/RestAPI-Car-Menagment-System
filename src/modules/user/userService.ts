@@ -5,15 +5,31 @@ import { User } from './IUser';
 import axios from 'axios';
 import { AppError } from '../../errors/AppError';
 import { convertDate } from '../../utils/convertDate';
-
+import { reserveRepository } from '../reserve/reserveRepository';
+import { IReserveRepository } from '../reserve/IReserveRepository';
 export class UserService {
 	private userRepository: IUserRepository;
+	private reserveRepository: IReserveRepository;
 
-	constructor(userRepository: IUserRepository) {
+	constructor(
+		userRepository: IUserRepository,
+		reserveRepository: IReserveRepository
+	) {
 		this.userRepository = userRepository;
+		this.reserveRepository = reserveRepository;
 	}
 
 	async registerUser(userData: User) {
+		const isEmailRepeated = await this.userRepository.findUserByEmail(
+			userData.email
+		);
+		if (isEmailRepeated) throw new AppError(400, 'Email already in use');
+
+		const isCPFRepeated = await this.userRepository.findUserByEmail(
+			userData.cpf
+		);
+		if (isCPFRepeated) throw new AppError(400, 'CPF already registered');
+
 		userData.password = await hashPass(userData.password);
 		userData.birth = new Date(convertDate(userData.birth));
 
@@ -41,25 +57,20 @@ export class UserService {
 
 	async getAllUsers() {
 		const users = await this.userRepository.getAllUsers();
-
 		if (!users) throw new Error('User not found');
-
 		return users;
 	}
 
 	async getUser(userId: string) {
 		const user = await this.userRepository.getUser(userId);
-
 		if (!user) throw new Error('User not found');
-
 		return user;
 	}
 
 	async deleteUser(userId: string) {
 		const user = await this.userRepository.deleteUser(userId);
 		if (!user) throw new Error('User not found');
-		//deletar as reservas dele
-		//await this.eventRepository.deleteAllUserEvents(userId);
+		await this.reserveRepository.deleteAllUserReserves(userId);
 
 		return user;
 	}
@@ -102,5 +113,5 @@ export class UserService {
 	}
 }
 
-const userService = new UserService(userRepository);
+const userService = new UserService(userRepository, reserveRepository);
 export { userService };
