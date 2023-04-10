@@ -57,6 +57,21 @@ export class UserController {
 	}
 
 	@CatchExpressError
+	async getUserById(
+		req: AuthenticatedRequest,
+		res: Response,
+		_next: NextFunction
+	) {
+		const userId = req.params.id;
+		const users: User = await this.userService.getUser(userId);
+
+		return res.status(200).json({
+			status: 'success',
+			data: users,
+		});
+	}
+
+	@CatchExpressError
 	async deleteUser(
 		req: AuthenticatedRequest,
 		res: Response,
