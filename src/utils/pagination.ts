@@ -3,7 +3,7 @@ export function pagination(
 	req: any
 ): [number, number, number, number, boolean, string[]] {
 	let page = 1;
-	let limit = 5;
+	let limit = 100;
 	if (req.query.page) page = +req.query.page;
 	if (req.query.limit) limit = +req.query.limit;
 	const skip = (page - 1) * limit;
