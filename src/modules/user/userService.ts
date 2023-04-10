@@ -25,9 +25,7 @@ export class UserService {
 		);
 		if (isEmailRepeated) throw new AppError(400, 'Email already in use');
 
-		const isCPFRepeated = await this.userRepository.findUserByEmail(
-			userData.cpf
-		);
+		const isCPFRepeated = await this.userRepository.findUserByCPF(userData.cpf);
 		if (isCPFRepeated) throw new AppError(400, 'CPF already registered');
 
 		userData.password = await hashPass(userData.password);
