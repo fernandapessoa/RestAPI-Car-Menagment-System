@@ -11,7 +11,6 @@ The API uses the REST pattern for communication with clients and returns data in
 - [**Links**](#links)
 - [**How to Run Locally**](#how-to-run-locally)
 - [**How to Use**](#how-to-use)
-- [**Comments**](#comments)
 
 
 
